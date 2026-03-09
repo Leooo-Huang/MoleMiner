@@ -1,0 +1,17 @@
+topic: "MoleMiner - LLM-powered 多源搜索聚合 CLI 工具 + Python SDK"
+topic_slug: "moleminer"
+status: in_progress
+current_phase: 6
+paused_at_gate: null
+started_at: "2026-03-09T00:00:00Z"
+completed_at: null
+phases:
+  1: { name: ideation, status: skipped, started_at: null, completed_at: "2026-03-09T00:00:00Z", output: "docs/00-project-spec.md", error: null, retries: 0 }
+  2: { name: product-spec, status: skipped, started_at: null, completed_at: "2026-03-09T00:00:00Z", output: "docs/00-project-spec.md", error: null, retries: 0 }
+  3: { name: ui-ux, status: skipped, started_at: null, completed_at: "2026-03-09T00:00:00Z", output: null, error: "CLI tool, no UI needed", retries: 0 }
+  4: { name: api, status: skipped, started_at: null, completed_at: "2026-03-09T00:00:00Z", output: null, error: "CLI tool, SDK API defined in design docs", retries: 0 }
+  5: { name: planning, status: completed, started_at: "2026-03-09T00:00:00Z", completed_at: "2026-03-09T00:01:00Z", output: "docs/plans/2026-03-09-moleminer-mvp-plan.md", error: null, retries: 0 }
+  6: { name: development, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+  7: { name: verification, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+  8: { name: delivery, status: pending, started_at: null, completed_at: null, output: null, error: null, retries: 0 }
+gate_history: []

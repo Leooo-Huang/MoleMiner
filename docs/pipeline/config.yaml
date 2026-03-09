@@ -1,0 +1,33 @@
+# AutoDev 流水线配置
+# MoleMiner - CLI 工具，跳过 UI/API 设计阶段
+
+pipeline:
+  mode: auto
+
+# 无门控，全自动
+gates: {}
+
+sleep_mode: false
+
+ralph_loop:
+  max_iterations: 50
+  completion_promise: "AUTODEV PIPELINE COMPLETE"
+
+phases:
+  ideation:
+    max_iterations: 3
+  product_spec: {}
+  ui_ux:
+    include_wireframes: false
+  api:
+    include_schemas: false
+  planning:
+    execution_style: auto
+  development:
+    use_worktree: false
+    branch_pattern: "autodev/moleminer"
+  delivery:
+    default_action: ask
+
+deployment:
+  auto_deploy: false
