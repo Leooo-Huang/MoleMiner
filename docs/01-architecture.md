@@ -71,27 +71,40 @@
 
 | 源 | 方式 | 覆盖 |
 |----|------|------|
-| google.py | Web scraping | 全网 |
+| google.py | Web scraping（不可靠） | 全网 |
 | hackernews.py | Algolia API（免费） | HN 社区 |
-| jina.py | r.jina.ai（免费） | URL 内容提取 |
+| github.py | GitHub REST API | 代码/项目 |
+| stackoverflow.py | Stack Exchange API | 技术问答 |
+| devto.py | Forem API | 开发者文章 |
+| lobsters.py | JSON 端点 | 技术社区 |
 
-**需要 API key：**
+**需要 API key（通过 `~/.moleminer/config.toml` 或环境变量配置）：**
 
 | 源 | 方式 | 覆盖 |
 |----|------|------|
+| brave.py | Brave Search API | 全网（独立索引） |
 | tavily.py | Tavily API | 全网语义搜索 + 内容提取 |
-| brave.py | Brave Search API | 全网（2000次/月免费） |
-| reddit.py | ScrapeCreators API | Reddit |
-| x.py | Bird Search | X |
+| exa.py | Exa API | 语义搜索 + findSimilar |
+| reddit.py | App-only OAuth | Reddit 社区 |
+| youtube.py | yt-dlp（零配置） | YouTube 视频 |
+| producthunt.py | GraphQL API | 产品发现 |
 
-**需要浏览器登录：**
+**需要浏览器登录（[cn] extra）：**
 
 | 源 | 方式 | 覆盖 |
 |----|------|------|
 | zhihu.py | Playwright + Cookie | 知乎 |
 | xiaohongshu.py | Playwright + Cookie | 小红书 |
 | weibo.py | Playwright + Cookie | 微博 |
-| wechat.py | Web scraping | 搜狗微信（无需登录） |
+| bilibili.py | 逆向 API | Bilibili |
+
+**内容提取（Lead Resolution 使用）：**
+
+| 工具 | 方式 | 用途 |
+|------|------|------|
+| Trafilatura | 本地 Python 库（首选） | HTML → 纯文本 |
+| Jina Reader | `r.jina.ai/{url}` API | 远程 URL 抓取+清洗 |
+| Tavily Extract | API | 批量 URL 内容提取 |
 
 ### 统一返回格式
 

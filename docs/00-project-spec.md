@@ -71,18 +71,27 @@ MIT
 ### 安装分层
 
 ```bash
-pip install moleminer            # 核心：Google/Bing scraping + HN（零配置）
-pip install moleminer[tavily]    # + Tavily 搜索和提取（需 API key）
-pip install moleminer[brave]     # + Brave Search（需 API key，免费 2000次/月）
-pip install moleminer[social]    # + Reddit/X（需 ScrapeCreators API key）
-pip install moleminer[cn]        # + 知乎/小红书/微博（Playwright + Cookie）
+pip install moleminer            # 核心：HN + GitHub + SO + Dev.to + Lobsters + Trafilatura
+pip install moleminer[tavily]    # + Tavily Python SDK（高级功能）
+pip install moleminer[social]    # + YouTube（yt-dlp）
+pip install moleminer[cn]        # + 知乎/小红书/微博/Bilibili（Playwright + Cookie）
+pip install moleminer[llm]       # + LLM Query Enhancement（openai）
 pip install moleminer[all]       # 全部
 ```
 
-零配置可用的源：
-- Google/Bing web scraping（无需 key）
-- Hacker News（Algolia API，免费无需 key）
-- Jina Reader（免费无需 key）
+零配置可用的源（无需任何 API key）：
+- Hacker News（Algolia API，免费无限）
+- GitHub（REST API，可选 token 提升限额）
+- Stack Overflow（Stack Exchange API，推荐免费 key）
+- Dev.to（Forem API，无需认证）
+- Lobsters（JSON 端点，无需认证）
+
+需要 API key 但不需要额外 Python 包（通过 config 配置）：
+- Brave Search（$5/月免费额度）
+- Tavily（1000 次/月免费）
+- Exa（1000 次/月免费，语义搜索）
+- Reddit（免费注册 OAuth app）
+- Product Hunt（免费注册 token）
 
 ### 插件架构
 
@@ -129,22 +138,28 @@ moleminer/
 │       ├── auth.py              # 凭证管理（API key、Cookie）
 │       ├── sources/             # Stage 2: 各信息源适配器
 │       │   ├── base.py          # BaseSource ABC
-│       │   ├── google.py        # Google/Bing web scraping（零配置）
+│       │   ├── google.py        # Google web scraping（零配置，不可靠）
 │       │   ├── hackernews.py    # HN Algolia API（零配置）
-│       │   ├── jina.py          # Jina Reader 页面提取（零配置）
-│       │   ├── tavily.py        # Tavily 搜索 + 提取（需 key）
 │       │   ├── brave.py         # Brave Search API（需 key）
-│       │   ├── reddit.py        # Reddit 搜索（需 key）
-│       │   ├── x.py             # X 搜索（需 key）
-│       │   ├── youtube.py       # YouTube 搜索
+│       │   ├── tavily.py        # Tavily 搜索（需 key）
+│       │   ├── exa.py           # Exa 语义搜索（需 key）
+│       │   ├── github.py        # GitHub REST API（可选 token）
+│       │   ├── stackoverflow.py # Stack Exchange API（推荐 key）
+│       │   ├── devto.py         # Dev.to / Forem API（无需 key）
+│       │   ├── lobsters.py      # Lobsters JSON（无需 key）
+│       │   ├── youtube.py       # YouTube via yt-dlp（无需 key）
+│       │   ├── reddit.py        # Reddit App-only OAuth（需 key）
+│       │   ├── producthunt.py   # Product Hunt GraphQL（需 token）
 │       │   ├── zhihu.py         # 知乎搜索（Playwright + Cookie）
 │       │   ├── xiaohongshu.py   # 小红书搜索（Playwright + Cookie）
 │       │   ├── weibo.py         # 微博搜索（Playwright + Cookie）
-│       │   └── wechat.py        # 搜狗微信搜索
+│       │   └── bilibili.py      # Bilibili 搜索（逆向 API）
 │       ├── store.py             # SQLite 存储（query 元信息 + 聚合结果）
 │       └── utils/
 │           ├── http.py          # HTTP 请求封装
-│           └── dedupe.py        # 去重逻辑
+│           ├── dedupe.py        # 去重逻辑
+│           ├── extract.py       # 内容提取（Trafilatura）
+│           └── jina_reader.py   # Jina Reader URL 内容提取
 ├── tests/
 └── docs/
 ```
@@ -255,18 +270,22 @@ LLM 将用户输入扩展为平台化搜索词。
 
 | 源 | 依赖 | 免费 | 需登录 |
 |----|------|------|--------|
-| google.py | 无 | 是 | 否 |
+| google.py | 无 | 是（不可靠） | 否 |
 | hackernews.py | 无 | 是 | 否 |
-| jina.py | 无 | 是 | 否 |
-| brave.py | API key | 2000次/月 | 否 |
-| tavily.py | API key | 有免费额度 | 否 |
-| reddit.py | API key | 取决于 provider | 否 |
-| x.py | API key | 取决于 provider | 否 |
-| youtube.py | 待定 | 待定 | 否 |
+| github.py | 无 | 是（可选 token） | 否 |
+| stackoverflow.py | 无 | 是（推荐 key） | 否 |
+| devto.py | 无 | 是 | 否 |
+| lobsters.py | 无 | 是 | 否 |
+| brave.py | API key | $5/月 | 否 |
+| tavily.py | API key | 1000次/月 | 否 |
+| exa.py | API key | 1000次/月 | 否 |
+| reddit.py | OAuth app | 是（免费注册） | 否 |
+| youtube.py | yt-dlp | 是 | 否 |
+| producthunt.py | OAuth token | 是（免费注册） | 否 |
 | zhihu.py | Playwright | 是 | 是（Cookie） |
 | xiaohongshu.py | Playwright | 是 | 是（Cookie） |
 | weibo.py | Playwright | 是 | 是（Cookie） |
-| wechat.py | 无 | 是 | 否 |
+| bilibili.py | Playwright | 是 | 否 |
 
 ### Stage 3: Aggregate
 
@@ -320,45 +339,54 @@ cookie_dir = "~/.moleminer/cookies/"
 
 ## 开发计划
 
-### Phase 1: MVP — 零配置可用
+### Phase 1: MVP — 基础框架 ✅ 已完成
 
-- [ ] 项目脚手架（pyproject.toml, src layout, CLI entry point）
-- [ ] BaseSource ABC + SourceRegistry
-- [ ] google.py（web scraping）
-- [ ] hackernews.py（基于 last30days 代码）
-- [ ] jina.py（页面提取）
-- [ ] aggregate.py（基础去重 + 时效过滤）
-- [ ] CLI: `moleminer search "query"` 输出 table/json
-- [ ] 发布 PyPI
+- [x] 项目脚手架（pyproject.toml, src layout, CLI entry point）
+- [x] BaseSource ABC + SourceRegistry
+- [x] google.py（web scraping — 不可靠，Phase 2 补充替代方案）
+- [x] hackernews.py（Algolia API）
+- [x] jina.py（搜索功能已失效，Phase 2 转为内容提取工具）
+- [x] aggregate.py（基础去重 + 分类）
+- [x] store.py（SQLite 自动存储）
+- [x] CLI: `moleminer search "query"` 输出 table/json/markdown
 
-目标：`pip install moleminer && moleminer search "AI hackathon"` 能跑
+### Phase 2: 架构重构 + 源扩展（12 个源）
 
-### Phase 2: 搜索引擎扩展
+- [ ] config.py（Config 系统：TOML + 环境变量）
+- [ ] BaseSource.enabled(config) 改签名
+- [ ] Registry 修复（双实例化 bug + config 传递 + 懒加载）
+- [ ] Pipeline 升级（Config、超时、错误日志）
+- [ ] SearchResult 加 language 字段
+- [ ] Trafilatura 内容提取（utils/extract.py）
+- [ ] Jina 从搜索源转为内容提取工具（utils/jina_reader.py）
+- [ ] brave.py（Brave Search API）
+- [ ] tavily.py（Tavily API，httpx 直调）
+- [ ] exa.py（Exa 语义搜索）
+- [ ] github.py（GitHub REST API）
+- [ ] stackoverflow.py（Stack Exchange API）
+- [ ] devto.py（Forem API）
+- [ ] lobsters.py（JSON 端点）
+- [ ] youtube.py（yt-dlp，零配置）
+- [ ] reddit.py（App-only OAuth via httpx）
+- [ ] producthunt.py（GraphQL API）
 
-- [ ] tavily.py
-- [ ] brave.py（基于 last30days 代码）
-- [ ] auth.py（API key 管理）
-- [ ] config.py（配置文件）
+### Phase 3: LLM 增强
 
-### Phase 3: 国外社区
+- [ ] enhance.py（Query Enhancement — 生成平台化搜索词）
+- [ ] 支持 OpenAI / Anthropic
 
-- [ ] reddit.py（基于 last30days 代码）
-- [ ] x.py（基于 last30days bird_x 代码）
-- [ ] youtube.py
-- [ ] parallel_search（基于 last30days 代码）
+### Phase 4: Lead Resolution
 
-### Phase 4: LLM 增强
+- [ ] resolve.py（从 lead 提取实体 → 搜官方链接）
+- [ ] 内容提取链：Trafilatura → Jina Reader → Tavily Extract
+- [ ] Exa findSimilar 集成
 
-- [ ] enhance.py（query enhancement）
-- [ ] resolve.py（lead resolution）
-- [ ] 支持 OpenAI / Anthropic / 本地模型
-
-### Phase 5: 国内社区
+### Phase 5: 中国平台
 
 - [ ] zhihu.py（Playwright, clean-room）
 - [ ] xiaohongshu.py（Playwright, clean-room）
 - [ ] weibo.py（Playwright, clean-room）
-- [ ] wechat.py（搜狗微信）
+- [ ] bilibili.py（逆向 API）
 - [ ] auth login 流程（扫码）
 
 ### Phase 6: 打磨
@@ -367,3 +395,4 @@ cookie_dir = "~/.moleminer/cookies/"
 - [ ] 完整测试
 - [ ] GitHub Actions CI
 - [ ] 文档站
+- [ ] PyPI 发布
