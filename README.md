@@ -1,187 +1,248 @@
+<h1 align="center">
+  MoleMiner
+</h1>
+
+<h4 align="center">You search once. It researches for you.</h4>
+
 <p align="center">
-  <img src="docs/assets/banner.png" alt="MoleMiner" width="600" />
+  <a href="https://www.npmjs.com/package/moleminer"><img src="https://img.shields.io/npm/v/moleminer.svg?style=flat-square&color=4fc3f7" alt="npm" /></a>
+  <a href="https://github.com/Leooo-Huang/MoleMiner/actions"><img src="https://img.shields.io/github/actions/workflow/status/Leooo-Huang/MoleMiner/ci.yml?style=flat-square&label=tests" alt="CI" /></a>
+  <img src="https://img.shields.io/badge/sources-12-4fc3f7?style=flat-square" alt="12 sources" />
+  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node 18+" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="MIT" /></a>
 </p>
 
-<h3 align="center">AI-powered deep research from your terminal.<br/>One query. 12 platforms. Recursive discovery.</h3>
-
 <p align="center">
-  <a href="https://www.npmjs.com/package/moleminer"><img src="https://img.shields.io/npm/v/moleminer.svg?style=flat-square&color=4fc3f7" alt="npm version" /></a>
-  <a href="https://github.com/Leo-Cyberautonomy/MoleMiner/actions"><img src="https://img.shields.io/github/actions/workflow/status/Leo-Cyberautonomy/MoleMiner/ci.yml?style=flat-square&label=tests" alt="CI" /></a>
-  <img src="https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square" alt="Node.js" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License" /></a>
-</p>
-
-<p align="center">
-  <a href="#quick-start">Quick Start</a> &middot;
-  <a href="#how-it-works">How It Works</a> &middot;
-  <a href="#sources">Sources</a> &middot;
-  <a href="#web-ui">Web UI</a> &middot;
-  <a href="#commands">Commands</a> &middot;
-  <a href="#contributing">Contributing</a>
+  <a href="#the-problem">The Problem</a> &#8226;
+  <a href="#how-it-works">How It Works</a> &#8226;
+  <a href="#quick-start">Quick Start</a> &#8226;
+  <a href="#web-ui--3d-globe">Web UI</a> &#8226;
+  <a href="#adaptive-search-scope">Adaptive Scope</a> &#8226;
+  <a href="#sources">Sources</a> &#8226;
+  <a href="#commands">Commands</a>
 </p>
 
 ---
 
-<!-- TODO: Replace with actual demo GIF once recorded -->
-<!-- <p align="center"><img src="docs/assets/demo.gif" alt="MoleMiner Demo" width="700" /></p> -->
+<!--
+<p align="center">
+  <img src="docs/assets/demo.gif" alt="MoleMiner in action" width="720" />
+</p>
+-->
 
-## Highlights
+## The Problem
 
-- **12 sources in parallel** -- Brave, Reddit, HN, GitHub, Stack Overflow, YouTube, Dev.to, Zhihu, Xiaohongshu, Weibo, WeChat, X
-- **AI recursive loop** -- LLM classifies results as direct/lead/irrelevant, extracts entities, generates new queries, follows leads automatically
-- **Smart scope detection** -- AI infers geographic scope (local/national/global) and auto-adjusts search granularity, result quotas, and content extraction depth
-- **Deep search mode** -- `--deep` enables MECE 6-dimension expansion (WHAT/WHERE/WHEN/WHO/HOW/SOURCE) for comprehensive coverage
-- **Terminal-native** -- JSON output for AI agents, Markdown export, fully pipe-friendly
-- **Web visualization** -- 3D globe view, search history, source management, QR login for Chinese platforms via `moleminer web`
-- **Multi-LLM** -- OpenAI, Gemini, Anthropic, Ollama (local). Switch with `moleminer profile use`
+You Google something. Click 5 links. Realize you need to search again with different words. Repeat. An hour later you have 20 tabs and no clear picture.
+
+**MoleMiner does that entire loop automatically.** You type your intent once. An AI agent generates queries, searches 12 platforms in parallel, classifies every result, extracts entities it finds interesting, and searches *again* -- recursively -- until there's nothing new to discover.
+
+```
+$ moleminer search "AI startup funding 2026" --deep
+
+Round 1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+  11 queries → 12 sources → 61 results
+  27 direct, 6 leads
+  Entities: Hack-Nation(0.9), USAII Hackathon(0.8), GWDC(0.8)
+
+Round 2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+  Following 5 entities → 25 new results → 15 direct
+
+Round 3 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100%
+  Converged. No new entities.
+
+✓ 47 results from 14 sources, 30 with geo-location
+  40 direct sources, 7 leads
+```
+
+## How It Works
+
+```mermaid
+graph TD
+    A["<b>Your intent</b><br/><i>'AI hackathon 2026'</i>"] --> B["<b>AI generates queries</b><br/>scope detection + dimension expansion<br/>+ smart source selection"]
+    B --> C["<b>12 sources in parallel</b><br/>Brave &bull; Reddit &bull; HN &bull; GitHub<br/>YouTube &bull; Zhihu &bull; XHS &bull; Weibo &bull; ..."]
+    C --> D["<b>AI classifies</b><br/>direct / lead / irrelevant"]
+    D --> E["<b>AI extracts entities</b><br/>names + confidence scores"]
+    E --> F{"New entities<br/>found?"}
+    F -->|"Yes"| B
+    F -->|"No"| G["<b>Content extraction</b><br/>fetch pages &rarr; clean text &rarr; compress"]
+    G --> H["<b>Geo-location extraction</b><br/>AI maps results to coordinates"]
+    H --> I["<b>Output</b><br/>Terminal &bull; JSON &bull; Markdown &bull; 3D Globe"]
+
+    style A fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style B fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style C fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style D fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style E fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style F fill:#1a1a2e,stroke:#ffa726,color:#e0e0e8
+    style G fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style H fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style I fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
+```
+
+The key insight: **search results contain clues**. A hackathon page mentions an organizer. The organizer's site lists 5 more events. Each event has sponsors. MoleMiner follows these leads automatically -- the same way a researcher would, but across 12 platforms simultaneously.
+
+## Why Not Just Use Google + ChatGPT?
+
+| | Google + ChatGPT | Perplexity | MoleMiner |
+|---|---|---|---|
+| **Sources** | 1 search engine | ~5 web sources | **12 platforms** (search + community + social + code + video) |
+| **Languages** | One at a time | English-centric | **Chinese + English simultaneously** (Zhihu, XHS, Weibo, WeChat) |
+| **Depth** | You do the recursion manually | Single-pass | **AI recursive loop** -- follows leads across rounds |
+| **Scope awareness** | You pick the right keywords | Fixed strategy | **Auto-detects** local/national/global and adapts granularity |
+| **Output** | Chat text | Chat text | **JSON / Markdown / 3D Globe** -- pipe to your agent or visualize |
+| **Self-hosted** | No | No | **Yes** -- your API key, your data, runs locally |
 
 ## Quick Start
 
 ```bash
 npm install -g moleminer
-moleminer setup                            # interactive wizard (~2 min)
-moleminer search "AI startup funding 2026"
+moleminer setup          # 2-min wizard: pick LLM provider, paste API key
+moleminer search "your topic here"
 ```
 
-That's it. The setup wizard configures your LLM provider and API key.
+That's it. Three commands from zero to results.
 
-## How It Works
+## Adaptive Search Scope
 
-```
-Round 0:  AI generates queries (smart source selection)
-            |
-            v
-          12 sources searched in parallel
-            |
-            v
-          AI classifies: direct / lead / irrelevant
-            |
-            v
-          AI extracts entities with confidence scores
-            |
-Round 1:  AI generates new queries from high-confidence entities
-            |
-            v
-          Search again -> classify -> extract -> ...
-            |
-Round N:  No new entities found -> stop -> output results
+The AI doesn't just generate queries -- it first **understands the geographic scope** of your intent and adapts its entire strategy:
+
+```mermaid
+graph LR
+    Q["Query"] --> S{"AI infers<br/>scope"}
+    S -->|"'深圳AI补贴'"| L["<b>LOCAL</b><br/>8 district queries<br/>10 results each<br/>deep page extraction"]
+    S -->|"'中国AI政策'"| N["<b>NATIONAL</b><br/>6 city queries<br/>5 results each<br/>balanced extraction"]
+    S -->|"'AI hackathon 2026'"| G["<b>GLOBAL</b><br/>5 region queries<br/>3 results each<br/>broad coverage"]
+
+    style Q fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style S fill:#1a1a2e,stroke:#ffa726,color:#e0e0e8
+    style L fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
+    style N fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style G fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
 ```
 
-MoleMiner doesn't just search -- it **researches**. Each round discovers new entities (companies, policies, people, technologies) and searches for them, building a comprehensive picture that no single search engine provides.
+**Local** queries get fewer, deeper results per district. **Global** queries spread thin across regions to maximize geographic coverage. The system prevents query explosion by capping results-per-query, not just total results -- so the last region gets as many results as the first.
 
-### SearchScope -- Adaptive Granularity
+## Web UI + 3D Globe
 
-The AI automatically detects the geographic scope of your query and adapts its strategy:
+```bash
+moleminer web    # opens localhost:3456
+```
 
-| Scope | Example query | Strategy |
-|-------|--------------|----------|
-| **Local** | "深圳AI创业补贴" | Few queries, deep results per district, low concurrency for gov sites |
-| **National** | "中国AI政策" | Balanced depth and breadth across cities |
-| **Global** | "AI hackathon 2026" | Many queries spread across regions, few results per query for even coverage |
+<!-- Screenshots: replace with actual images -->
+<!-- ![Search History](docs/assets/screenshot-history.png) -->
+<!-- ![3D Globe](docs/assets/screenshot-globe.png) -->
 
-No configuration needed -- the LLM decides the scope and the pipeline adapts automatically.
+- **3D Digital Globe** -- Cyber-style dark globe with glowing markers at result locations. Click to inspect.
+- **Search History** -- Browse, filter, delete past searches. See direct/lead/location counts at a glance.
+- **Source Management** -- Toggle 12 sources on/off. Auth sources trigger in-browser QR login.
+- **Live Search** -- Search from the browser with real-time SSE progress (round-by-round updates).
+- **Settings** -- View LLM engine, API keys, search defaults. Switch language (EN/ZH).
+
+## Deep Search Mode
+
+Add `--deep` to enable MECE 6-dimension expansion:
+
+```
+WHAT    -- sub-topics and facets
+WHERE   -- geographic regions (auto-scaled by scope)
+WHEN    -- time windows (2026, 2025, latest)
+WHO     -- actors, organizations, vendors
+HOW     -- methods, formats, approaches
+SOURCE  -- evidence types (papers, docs, benchmarks)
+```
+
+The AI picks the 1-2 most relevant dimensions and expands them into concrete queries. "AI hackathon 2026" with `--deep` might expand WHERE into `["North America AI hackathon 2026", "Europe AI hackathon 2026", "Asia AI hackathon 2026"]` -- queries that no single search would cover.
 
 ## Sources
 
-| Category | Global | China |
-|----------|--------|-------|
-| Search engine | Brave | -- |
-| Community | Reddit, Hacker News | -- |
-| Q&A | Stack Overflow | Zhihu |
-| Code | GitHub | -- |
-| Video | YouTube | -- |
-| Blog | Dev.to | WeChat |
-| Social | X / Twitter | Weibo, Xiaohongshu |
-
-AI automatically selects which sources to query based on your search language and topic. Chinese queries search Chinese platforms. English queries search global platforms.
-
-## Web UI
-
-```bash
-moleminer web    # opens browser at localhost:3456
+```
+              Global                          China
+         ┌─────────────┐              ┌──────────────┐
+Search   │    Brave     │              │              │
+         ├─────────────┤              ├──────────────┤
+Community│ Reddit  HN   │              │              │
+         ├─────────────┤              ├──────────────┤
+Q&A      │ StackOverflow│              │    Zhihu     │
+         ├─────────────┤              ├──────────────┤
+Code     │   GitHub     │              │              │
+         ├─────────────┤              ├──────────────┤
+Video    │   YouTube    │              │              │
+         ├─────────────┤              ├──────────────┤
+Blog     │   Dev.to     │              │   WeChat     │
+         ├─────────────┤              ├──────────────┤
+Social   │   X/Twitter  │              │ Weibo  XHS   │
+         └─────────────┘              └──────────────┘
 ```
 
-A full dashboard with sidebar navigation, search history, source management (enable/disable toggle), settings, and a 3D digital globe visualization of geo-located results.
-
-- **3D Globe** -- Cyber-style dark globe with glowing markers. Click markers to see results at that location.
-- **Source Management** -- Toggle sources on/off. Auth sources (Zhihu, Weibo, XHS) show QR login modal when enabled without credentials.
-- **QR Login** -- Scan QR codes directly in the browser for Chinese platforms. No need to switch to CLI.
-- **Live Search** -- Search from the web UI with real-time SSE progress updates.
-
-## Examples
-
-```bash
-# Deep research with dimension expansion (MECE 6-dimension framework)
-moleminer search "AI hackathon 2026" --deep
-
-# Local scope -- AI auto-detects city-level and searches by district
-moleminer search "深圳 AI 创业补贴政策" --deep
-
-# Normal search (no dimension expansion, still uses smart scope)
-moleminer search "best practices for RAG pipelines"
-
-# JSON output for AI agent integration
-moleminer search "LLM inference optimization" --format json
-
-# Export results with AI summary
-moleminer search "startup accelerators" --export report.md --summary
-
-# Search specific sources only
-moleminer search "python async" --sources github,stackoverflow
-```
+The AI decides which sources to search based on **language anchor**: Chinese topics skip English sources, global topics search both. Chinese platforms support QR code login (`moleminer login zhihu`).
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `moleminer search <query>` | AI-powered recursive search |
-| `moleminer setup` | Interactive configuration wizard |
-| `moleminer doctor` | Check environment and diagnose issues |
-| `moleminer web` | Start web visualization UI |
-| `moleminer sources` | List all sources and their status |
-| `moleminer login <platform>` | QR/browser login for platforms |
-| `moleminer profile use <name>` | Switch LLM provider profile |
-| `moleminer history` | Browse past searches |
+```bash
+moleminer search <query>           # AI recursive search
+moleminer search <query> --deep    # + dimension expansion
+moleminer web                      # open web dashboard + 3D globe
+moleminer setup                    # configure LLM provider
+moleminer doctor                   # diagnose environment issues
+moleminer sources                  # list sources + health status
+moleminer login <platform>         # QR login for auth platforms
+moleminer profile use <name>       # switch LLM profile
+moleminer history                  # browse past searches
+```
 
 ### Search Options
 
 ```
+-d, --deep               MECE dimension expansion + adaptive scope
 -s, --sources <list>     Comma-separated source names
 -f, --format <type>      terminal | table | json | markdown | report
 -r, --max-rounds <n>     Max recursive rounds (default: 3)
--d, --deep               Deep search: MECE dimension expansion + adaptive scope
--v, --verbose            Show full URLs, sources, and summaries
--e, --export <path>      Export results to file (respects --format)
-    --summary            Generate AI summary (with --export)
+-v, --verbose            Full URLs, sources, summaries
+-e, --export <path>      Export results to file
+    --summary            Generate AI summary report
+```
+
+## For AI Agents
+
+MoleMiner is designed to be called by AI agents and automation:
+
+```bash
+# Pipe-friendly JSON output
+moleminer search "topic" --format json | jq '.results[] | .title'
+
+# Use in your agent workflow
+result=$(moleminer search "topic" --format json)
+echo $result | your-agent-process
 ```
 
 ## Configuration
 
 ```bash
-moleminer config list    # show all settings
-moleminer config path    # show config file location (~/.moleminer/config.toml)
+moleminer config list     # show all settings
+moleminer config path     # ~/.moleminer/config.toml
 ```
 
-All settings can be overridden via `MOLEMINER_*` environment variables. Use **profiles** to switch between LLM providers:
+Multi-LLM profile switching:
 
 ```bash
-moleminer profile add work -p openai -k sk-...
-moleminer profile add local -p ollama
+moleminer profile add work   -p openai -k sk-...
+moleminer profile add cheap  -p ollama
+moleminer profile add gemini -p gemini -k AIza...
 moleminer profile use work
 ```
 
-## Prerequisites
+Supports **OpenAI**, **Gemini**, **Anthropic**, and **Ollama** (local).
+
+## Requirements
 
 - **Node.js 18+**
-- **An LLM API key** (OpenAI / Gemini / Anthropic / Ollama local)
-- **Cost**: ~$0.01-0.10 per search (LLM API calls). Search sources are free.
-- **Optional**: Playwright for Chinese platform login (`npm install playwright`)
+- **One LLM API key** (OpenAI / Gemini / Anthropic / Ollama for free local)
+- **Cost**: ~$0.01-0.10 per search (LLM calls). All search sources are free.
+- **Optional**: `npm install playwright` for Chinese platform QR login
 
 ## Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Adding a new search source is straightforward -- implement the `BaseSource` interface and register it. See [the sources directory](ts/src/sources/) for examples.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Adding a new source is ~50 lines -- implement `BaseSource` and register it.
 
 ## License
 
