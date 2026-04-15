@@ -6,3 +6,13 @@ dist/
 build/
 .pytest_cache/
 .ruff_cache/
+node_modules/
+ts/src/web/ui/node_modules/
+dist/
+*.env
+*.env.local
+api-keys.txt
+*.pem
+*.key
+credentials.json
+.claude/worktrees/

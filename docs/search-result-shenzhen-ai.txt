@@ -1,0 +1,193 @@
+
+[Round 1/1] Generating queries...
+  → 6 sources, 5 skipped (zh)
+  Searching 6 sources... wechat(30) brave(60) youtube(55) weibo(0) zhihu(53) xiaohongshu(0)
+  198 raw results
+  Classifying 180 results (6 batches)...
+  → 18 direct, 162 leads
+  Extracting entities from 162 leads...
+  → 深圳市工业和信息化局(1.0), 深圳市人民政府(1.0), 深圳市科技创新局(0.9), 深圳市(1.0), 深圳市龙岗区(1.0), 深圳市南山区(0.9), 深圳市福田区(0.9), 深圳市前海(0.9), 广东省人民政府(0.9), 合肥高新区(0.8), 《深圳市打造人工智能先锋城市的若干措施》(0.9), 《深圳市加快打造人工智能先锋城市行动计划（2025—2026年）》(0.9), 《深圳市龙岗区关于支持人工智能产业引领高质量发展若干措施》（深龙工信规〔2024〕7号）(0.9), 《深圳市工业和信息化局打造人工智能先锋城市项目扶持计划操作规程》（深工信规〔2025〕3号）(0.9), 《广东省人民政府关于加快建设通用人工智能产业创新引领地的实施意见》(0.9), 《深圳市自主创业扶持补贴办法》（深人社规〔2015〕20号）(0.8), 《南山区促进人工智能产业发展专项扶持措施（征求意见稿）》(0.8), 《福田区支持人工智能产业高质量发展若干措施（征求意见稿）》(0.8), 《合肥高新区打造人工智能OPC创业生态示范区行动计划(征求意见稿)》(0.8), 深圳OPC政策(0.9), 龙虾十条(0.9), OpenClaw(0.9), DeepSeek(0.8), QClaw(0.7), 猛犸AI(0.7), 百度智能云(0.8), 腾讯(0.8), 高盛(0.8), 红杉资本美国(0.8), 谷歌研究实验室(0.8), 华雅企服(0.7), AI创投加速计划(0.8), 中国深圳创新创业大赛(0.8), 2025全球人工智能终端展(0.8), AGIC深圳人工智能大会(0.8), 深圳国际通用人工智能展(0.8), 青年导演创作扶持计划(0.7), 陈厂长·AI智能体实体战创业营(0.6), 广东政务服务网(0.8), 广东公共就业服务云平台(0.8), 深圳前海青年梦工厂(0.8), 深圳大剧院(0.7), 深圳图书馆中心馆南书房(0.6)
+Sources: wechat(30) brave(60) youtube(55) weibo(0) zhihu(53) xiaohongshu(0) hackernews(skipped) reddit(skipped) github(skipped) stackoverflow(skipped) devto(skipped)
+
+#    Title                                              Source       Type     URL
+---------------------------------------------------------------------------------
+1    深圳市罗湖区扶持软件信息和人工智能产业发展若干措施-政策文件-深圳市罗湖区人民政府门户网站      brave        direct   https://www.szlh.gov.cn/zwgk/zcwj/content/post_11062792.html
+2    深圳向企业发放首批近2亿元“训力券”-深圳政府在线_深圳市人民政府门户网站              brave        direct   https://www.sz.gov.cn/cn/xxgk/zfxxgj/zwdt/content/post_12...
+3    市工业和信息化局关于印发《深圳市打造人工智能OPC创业生态引领地行动计划（2026—2027年... brave        direct   https://www.sz.gov.cn/cn/xxgk/zfxxgj/tzgg/content/post_12...
+4    深圳将设100亿元AI和机器人产业基金 广东省人民政府门户网站                    brave        direct   http://www.gd.gov.cn/gdywdt/dsdt/content/post_4671682.html
+5    深圳经济特区人工智能产业促进条例 （2022 年8 月30 日深圳市第七届人民代表大会常务委员... brave        direct   https://cnshuziren.oss-cn-shenzhen.aliyuncs.com/wenzhang/...
+6    深圳市加快打造人工智能先锋城市行动计划（2025—2026年）--政策法规              brave        direct   https://www.sz.gov.cn/cn/xxgk/zfxxgj/zcfg/content/post_12...
+7    深圳市福田区支持人工智能产业高质量发展若干措施                            brave        direct   http://www.szft.gov.cn/ftqkjj/gkmlpt/content/11/11690/pos...
+8    深圳市前海深港现代服务业合作区管理局关于印发《深圳市前海深港现代服务业合作区管理局关于支持人工... brave        direct   https://www.cnbayarea.org.cn/policy/policy%20release/poli...
+9    深圳市工业和信息化局打造人工智能先锋城市项目扶持计划操作规程--政策法规               brave        direct   https://www.sz.gov.cn/cn/xxgk/zfxxgj/zcfg/content/post_12...
+10   《深圳市加快打造人工智能先锋城市行动计划（2025—2026年）》发布-福田政府在线         brave        direct   https://www.szft.gov.cn/bmxx/tztghqyfwzx/zcfg/content/pos...
+11   多地加大政策支持、完善发展生态——加快布局人工智能产业新赛道_中央网络安全和信息化委员会办公室    brave        direct   https://www.cac.gov.cn/2024-03/18/c_1712433069701168.htm
+12   初创企业补贴-深圳市人力资源和社会保障局网站                             brave        direct   http://hrss.sz.gov.cn/ztfw/gaojyzt/cy/zzcyfcbt/ccqybt/
+13   初创企业补贴-创业补贴-深圳市人力资源和社会保障局网站                        brave        direct   https://hrss.sz.gov.cn/ztfw/cjjy/cyfw/cybt/content/post_2...
+14   初创企业补贴                                             brave        direct   https://www.szns.gov.cn/bsfw/ztfw/jyzt/zcwj13/content/pos...
+15   深圳市人力资源和社会保障局关于印发《深圳市就业创业补贴申请办理清单》的通知-大鹏新区政府在线     brave        direct   https://www.dpxq.gov.cn/ztzl/mszt/jyfw/zcfg/content/post_...
+16   深圳出台《实施细则》 进一步支持港澳青年就业创业                           brave        direct   http://www.locpg.gov.cn/jsdt/2023-05/05/c_1212174165.htm
+17   深圳多措并举进一步支持港澳青年就业创业-粤港澳大湾区门户网                      brave        direct   https://www.cnbayarea.org.cn/city/shenzhen/zxdt/content/p...
+18   创业场租补贴-办事指南-龙岗政府在线                                 brave        direct   https://www.lg.gov.cn/zwfw/zdfw/jiuye/cyfw/bszn/content/p...
+19   深圳 OPC 新政重磅来袭!1200 万补贴背后,藏着 AI 创业的黄金风口             wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+20   深圳＂龙虾十条＂政策深度解读:零成本养AI,超级个体创业潮如何把握?                 wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+21   政策红利来袭|深圳AI OPC创业新风口,华雅企服等你来入驻啦!                   wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+22   深圳AI创业爆发期!2026OPC政策全解析,一人开公司最高省千万                  wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+23   深圳 1 人创业封神!AI 龙虾 + 政府补贴,联合办公 0 成本当老板               wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+24   深圳放大招!一人公司(OPC)创业新政:补贴、场地、场景全配齐,2年培育千家AI企业         wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+25   全国AI创业扶持政策新闻汇总 | 麻瓜补习社                             wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+26   一个人就是一家公司:深圳大手笔扶持AI“一人公司”创业,你敢抓住机遇吗?               wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+27   《深圳“AI龙虾十条”政策深度解读:普通人如何抓住AI创业红利?》                  wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+28   重磅扶持!深圳AI一人公司创业生态计划:最高千万“训力券”、百万创业资助与人才安居补贴全面启动    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+29   1亿元资助可领!深圳市及龙岗等9区人工智能扶持政策资助汇总                      wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+30   深圳OPC政策,我帮你把所有细节查清楚了(附猛犸AI实操指南)                    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+31   重磅!广东发布全国首个AI一人公司扶持政策,100亿基金已到位                    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+32   为了“养龙虾”,深圳龙岗发布“龙虾十条”!最高1000万元股权投资支持!AI政策背后的千亿野望    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+33   腾讯官宣:内测QClaw!深圳佛山等地出台政策支持AI智能体,附人工智能训练师考证指南        wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+34   “一人公司”时代来了!深圳最新政策全方位支持人工智能OPC创业                    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+35   全国AI创业扶持政策新闻汇总 | 麻瓜补习社                             wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+36   深圳龙岗发布 AI 扶持新政 助力 OpenClaw 智能体与 OPC 创业生态发展!附:人工... wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+37   从深圳龙岗区支持AI“养龙虾”十条政策看未来组织趋势                         wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+38   深圳龙岗“养龙虾”新政刷屏:最高1000万支持AI创业,留学生回国新风口?              wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+39   深圳创业补贴详解,最高补贴43万!                                  wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+40   最新!深圳创业补贴政策详解,还有最高60万元的无息贷款                        wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+41   2023深圳创业补贴最新政策解读                                   wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+42   2026深圳创业补贴申请指南:不限户籍学历,场租/初创等补贴详解+超全流程!             wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+43   深圳2026年最全的创业补贴攻略篇,不看后悔哦!(创业补贴政策及申请流程详解),记得关注收藏哦~   wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+44   2025 深圳创业补贴最新攻略!最高领 100 万 + 3 年房租补贴,覆盖全人群!         wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+45   26年2月最新深圳公司注册全攻略:创业补贴+资料+流程一网通办,深圳创业老板必看!最高领10000! wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+46   26年《深圳最新创业补贴》全攻略:6 大补贴 + 申请指南,创业者必看!               wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+47   2026深圳创业补贴政策全解析                                    wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+48   2026深圳创业补贴政策全解析(适合谁,谁能拿)                           wechat       lead     https://weixin.sogou.com/link?url=dn9a_-gY295K0Rci_xozVXf...
+49   深圳市人工智能产业政策有这些！5000万补贴别错过！                         brave        lead     https://m.shenkexin.com/news/info-skill-12278.html
+50   深圳发近2亿算力补贴 最高可拿千万-南都数字报                            brave        lead     https://ipaper.oeeee.com/ipaper/H/html/2025-04/03/content...
+51   2024中国首个AI新政！深圳前海首发，最高2000万支持，16条具体措施亮点来了 - 智东西    brave        lead     https://zhidx.com/p/409204.html
+52   深圳AI新政：构建百亿基金投资生态，每年发放数亿元补贴                        brave        lead     https://m.mp.oeeee.com/a/BAAFRD0000202412181035995.html
+53   AI催化新一轮创业潮与创富潮：深圳在抢跑|深圳市_新浪财经_新浪网                  brave        lead     https://finance.sina.com.cn/roll/2025-03-04/doc-inennutm5...
+54   关于印发《深圳市打造人工智能先锋城市的若干措施》的通知-高新技术企业认定网              brave        lead     https://www.kbosschina.com/tonggao/6388.html
+55   百度智能云联手深圳加速AI创企成长，破解“不可能三角”                        brave        lead     https://m.mp.oeeee.com/a/BAAFRD0000202509241126413.html
+56   深圳撒钱了，超5亿补贴AI产业，普通人也能分一杯羹！ - 知乎                    brave        lead     https://zhuanlan.zhihu.com/p/13938903738
+57   深圳在硬件生态驱动下打造AI先锋城市_央广网                             brave        lead     https://sz.cnr.cn/sy/20250402/t20250402_527121424.shtml
+58   深圳市科技创新局2024年度深圳市训力券服务机构入库申请指南                     brave        lead     https://www.kbosschina.com/zizhu/chuangxinquan/
+59   深圳重磅加码！23项政策助力人工智能与机器人产业，高达5000万元                  brave        lead     https://m.shenkexin.com/news/info-skill-13522.html
+60   借AI之势，深圳电子产品正在卖爆全球 - 科技 - 南方财经网                    brave        lead     https://www.sfccn.com/2024/12-25/2MMDE0NDlfMTk3ODc2Mg.html
+61   妇联AI创业课补贴申请流程                                      brave        lead     https://www.shrzkj.com.cn/qiyeaigc/81924.html
+62   权威发布｜深圳这场重磅发布会信息量大、干货满满_深圳新闻网                      brave        lead     https://www.sznews.com/news/content/2025-02/23/content_31...
+63   深圳发布人工智能重磅计划：明年AI企业数量超3000家                        brave        lead     http://m.tvoao.com/news/220574.html
+64   AI催化新一轮创业潮与创富潮：深圳在抢跑-36氪                           brave        lead     https://36kr.com/p/3191745884414340
+65   【产业政策】深圳各区近期人工智能政策全解析：赋能产业新未来                      brave        lead     https://szaicx.com/page142?article_id=16066
+66   2024年深圳市福田区支持人工智能产业高质量发展若干措施（征求意见稿）-高新技术企业认定网      brave        lead     https://www.kbosschina.com/tonggao/5830.html
+67   将投入千万补贴与百亿基金，深圳AI产业政策重磅落地！附《深圳市打造人工智能先锋城市的若干措施》... brave        lead     https://m.iotexpo.com.cn/SZ/NewsView/be79d8ca-2030-4f8e-8...
+68   将投入千万补贴与百亿基金，深圳AI产业政策重磅落地！附《深圳市打造人工智能先锋城市的若干措施》... brave        lead     https://www.agicexpo.com/SZ/NewsView-be79d8ca-2030-4f8e-8...
+69   深圳市具身智能机器人技术创新与产业发展政策申报指引-高新技术企业认定网                brave        lead     https://www.kbosschina.com/tonggao/6519.html
+70   深圳市工业和信息化局关于印发《深圳市加快打造人工智能先锋城市行动计划（2025—2026年）》... brave        lead     https://www.kbosschina.com/tonggao/6485.html
+71   深圳市工信局关于2022年新兴产业扶持计划（人工智能）拟资助项目公示的通知-高新技术企业认定网    brave        lead     https://www.kbosschina.com/tonggao/3867.html
+72   深圳市打造人工智能先锋城市的若干措施                                 brave        lead     https://law168.com.cn/doc/view?id=195548
+73   2024年深圳创业补贴最全攻略，轻松到手10W+ - 知乎                      brave        lead     https://zhuanlan.zhihu.com/p/560139766
+74   ​深圳创业补贴最新申请流程、条件、补贴全面解析                            brave        lead     http://m.zcfudao.com/page/chuangye.html
+75   2024年深圳创业补贴汇总-深圳办事易-深圳本地宝                          brave        lead     http://bsy.sz.bendibao.com/bsyDetail/619710.html
+76   冲！2025深圳创业补贴指南：申请条件+要求说明 - 知乎                      brave        lead     https://zhuanlan.zhihu.com/p/22695384426
+77   深圳如何申请初创业补贴?-华夏泰科                                  brave        lead     https://seo.huaxiataike.com/ask/76089.html
+78   深圳初创企业补贴费用与流程                                      brave        lead     https://www.0755-12315.com/news/3038.cshtml
+79   深圳创业_深圳创业补贴_深圳自主创业_深圳创业补贴政策                        brave        lead     https://m.bendibao.com/bsy/szcybtbs/
+80   深圳市就业创业补贴申请办理清单-高新技术企业认定网                          brave        lead     https://www.kbosschina.com/faq/4108.html
+81   深圳的创业补贴政策有哪些不同的补贴项目？-华夏泰科                          brave        lead     https://seo.huaxiataike.com/ask/72658.html
+82   深圳海归创客们，这几种创业补贴你一定不要错过！                            brave        lead     https://www.st-guanjia.com/returnees/news/news-190628.html
+83   深圳初创企业补贴怎么申请-深圳办事易-深圳本地宝                           brave        lead     http://bsy.sz.bendibao.com/bsyDetail/636659.html
+84   深圳确定了！最高可领10万元！2025年深圳创业补贴政策全解读-政策家                brave        lead     https://www.zhengcejia.com/news/55309.html
+85   深圳大学生初创企业补贴,深安汇全部告诉您                               brave        lead     http://www.shenanhui.com/info-detail.php?InfoId=190
+86   都在说AI创业， 目前我看到AI创业唯一的机会只有这一个#参哥 #参哥认知圈 #思维 #AI创业   youtube      lead     https://www.youtube.com/watch?v=Sg46sdIjUqs
+87   广东深圳：“一人公司”悄然兴起 “AI同事”组建极简团队                       youtube      lead     https://www.youtube.com/watch?v=QaiJfR0Tjqw
+88   深圳突然发布“龙虾十条”！OpenClaw引爆AI智能体革命，加密投资者的下一个百倍风口？      youtube      lead     https://www.youtube.com/watch?v=y5rmjK2Ia9U
+89   深圳出现了一套新型的Ai系统，人在家中做，💰从天上来#商业 #创业#人工智能#赚钱#干货分享    youtube      lead     https://www.youtube.com/watch?v=tM5bG2I_lCc
+90   【投资篇】假设让AI来创业（二）深圳程序员小李——从零到一的科技创业路 | 斯嘉丽的小生意经济学   youtube      lead     https://www.youtube.com/watch?v=Hk9MssmaBYQ
+91   【灣創】80後法學博士香港創業撞板　深圳攞數百萬資助做AI                      youtube      lead     https://www.youtube.com/watch?v=E5DS1c2S-o8
+92   深圳炸场！桌面藏“工业猛兽”，AI让小白30分钟玩转精密制造，德日慌了？#中国智造yyds#深... youtube      lead     https://www.youtube.com/watch?v=rc5hAw_1nb4
+93   From Egypt to Shenzhen: Building China’s First ... youtube      lead     https://www.youtube.com/watch?v=_m6V5G6E18o
+94   一个人年入千万，AI创业的十个步骤                                  youtube      lead     https://www.youtube.com/watch?v=4CUqeauH3-4
+95   VID20260111_163736深圳图书馆中心馆南书房-AI创业避坑指南——从百余创新创业... youtube      lead     https://www.youtube.com/watch?v=ml0h5uJFmgc
+96   陈厂长·AI智能体实体战创业营(深圳9月23-25日)                        youtube      lead     https://www.youtube.com/watch?v=aTXFuwOg4OU
+97   AI模型能力提升，行业机会变大还是变小？ #ai  #ai创业 #agent #人工智能 #智能体  youtube      lead     https://www.youtube.com/watch?v=75cuw082Kzw
+98   VID20260111_173923深圳图书馆中心馆南书房-AI创业避坑指南——从百余创新创业... youtube      lead     https://www.youtube.com/watch?v=LVKuCYMSjeo
+99   陈厂长·AI智能体实体战创业营(深圳9月23-25日)                        youtube      lead     https://www.youtube.com/watch?v=2yF4TLACGAY
+100  【人工智能】10万亿美元的AI革命 | 红杉资本美国 | 速度将远超以往工业革命 | 专业化将... youtube      lead     https://www.youtube.com/watch?v=Cv4JewJH5uM
+101  一人公司”正在崛起 AI时代的创业新范式，为什么深圳正在抢跑？#一人公司#AI时代创业#深圳创... youtube      lead     https://www.youtube.com/watch?v=y9uJ8BqjreY
+102  如果你还不会创建自己的AI智能体，今天一条视频教会你，拿走不谢～#赚钱 #创业 #人工智能 #... youtube      lead     https://www.youtube.com/watch?v=V1qLQH7aZ8E
+103  深圳政府出钱支持全民养龙虾，中国个人生产力AI普及即将开启狂飙时代                  youtube      lead     https://www.youtube.com/watch?v=22cfUHpFQdU
+104  70名“AI公务员”来了！深圳宣布全面启用DeepSeek “手感”如何？| CCTV「新闻1... youtube      lead     https://www.youtube.com/watch?v=ElbeADL6BCw
+105  高盛报告深度解读：深圳广州地产“分化的马赛克”与AI驱动下的行业自救                 youtube      lead     https://www.youtube.com/watch?v=qA1tOGeUYM4
+106  【精选必看】AI五大底层范式 | 哥白尼式认知革命 | 权重冻结与即时学习 | 无限注意力技术... youtube      lead     https://www.youtube.com/watch?v=IRhhzGAcEjo
+107  “AI公务员”入编！深圳公务员天塌了！                                youtube      lead     https://www.youtube.com/watch?v=rDaAc5r0bQM
+108  焦点 | 不是猛龙不过江 狮城企业勇闯深圳发展AI | Singapore Tech Comp... youtube      lead     https://www.youtube.com/watch?v=cv841OlrxuM
+109  想知道当今的AI技术如何落地成真？来#2025全球人工智能终端展  就对了！跟着深圳卫视记者天... youtube      lead     https://www.youtube.com/watch?v=dCN8zoHm7BA
+110  [大灣區, 專業投資] |深圳如何發展人工智能為深圳賦能                       youtube      lead     https://www.youtube.com/watch?v=SrhtZ1iyidY
+111  70名AI公務員上崗！中國深圳政務起飛，未來已來？                          youtube      lead     https://www.youtube.com/watch?v=7QtsziGOV2M
+112  深圳AI人工智能Web3商務考察團x創富圈                              youtube      lead     https://www.youtube.com/watch?v=jZntPKiPN3g
+113  AI公务员已上线 这一波深圳反应的速度也太快了吧，公务员都感到浓浓的危机感DeepSeek A... youtube      lead     https://www.youtube.com/watch?v=_XTX1tAPMoA
+114  XIN科技周刊|铁饭碗不再“铁”？深圳政务系统迎来70名AI员工                   youtube      lead     https://www.youtube.com/watch?v=CldXJUxe6Zs
+115  全国首个人工智能终端展在深圳举行 “剧透”未来生活场景                        youtube      lead     https://www.youtube.com/watch?v=3qTPui0d--s
+116  李小加：中國不再是追隨者；深圳AI公务员上岗，效率飙升；国内首个算力生态超市在沪发布：華爾街科... youtube      lead     https://www.youtube.com/watch?v=A1Q-jDl2WVM
+117  “AI公务员”来了 ！ 深圳首批70名上岗，覆盖场景240个，错误率控制在5%以内。（来源：中... youtube      lead     https://www.youtube.com/watch?v=Nl8-czH3pf0
+118  China’s AI Fail: DeepSeek Fooled! Robots Attack... youtube      lead     https://www.youtube.com/watch?v=cvXLtX-97nQ
+119  機器人走進深圳學校，受到熱烈歡迎#大灣區 #深圳 #机器人 #人工智能 #智能機器人 #機器人    youtube      lead     https://www.youtube.com/watch?v=WHoMgGdOoE4
+120  深圳前海青年夢工廠：港人創業就業首選地|多重福利補貼 #北上投資 #北上創業 #商業易 #深圳創業  youtube      lead     https://www.youtube.com/watch?v=TOL5F5tvhAE
+121  15秒真的說不完港澳台青年在深圳創業的好處！ #港澳青年创业补贴 #香港人大陆创业 #創業 #... youtube      lead     https://www.youtube.com/watch?v=516QyLcicMc
+122  5月20日，“青年导演创作扶持计划”第三季深圳展演在深圳大剧院举行，#孙红雷  领衔主讲《活生... youtube      lead     https://www.youtube.com/watch?v=9tytR2HUFNU
+123  深圳創業補貼💰💰申請全攻略                                    youtube      lead     https://www.youtube.com/watch?v=J68BxH4TaaQ
+124  深圳写字楼变天了！“一人即公司”模式爆火，万亿房产逻辑正在被AI重构                 youtube      lead     https://www.youtube.com/watch?v=JqYz2ZTxMGE
+125  去了趟深圳大学城，聊聊当下年轻人创业这件事                              youtube      lead     https://www.youtube.com/watch?v=t-ygQMmI0eI
+126  深圳创业开咖啡店日出200杯的一天#创业日记 #vlog日常 #vlog十亿流量扶持计划       youtube      lead     https://www.youtube.com/watch?v=M1BXS4P6_YM
+127  四年前在深圳创业时，商场一铺难求，如今各大商场反来找我合作                      youtube      lead     https://www.youtube.com/watch?v=vUvzcyMVivI
+128  香港企業到深圳創業的好處！利用申請BUD補貼100萬在深圳開實體店我們已經有多個案例。💰相信... youtube      lead     https://www.youtube.com/watch?v=-WtfjTdL0Q0
+129  你還不知道深圳前海有港澳青年創業補貼？快來看看你符不符合申請條件！#互聯網 #香港 #澳門 #... youtube      lead     https://www.youtube.com/watch?v=KO3__avCaiA
+130  點解咁多港人係內地創業都揀深圳市寶安區？                               youtube      lead     https://www.youtube.com/watch?v=MtnrtA5ud9Q
+131  港青姐妹花深圳創業　助港人港企北上發展                                youtube      lead     https://www.youtube.com/watch?v=dyeeL-ffpv4
+132  灣區追蹤。深圳創業                                          youtube      lead     https://www.youtube.com/watch?v=UrkVXTdJ-pA
+133  靳磊和何立峰石泰峰黄坤明的关系；靳磊夫人的牛逼社交圈；深圳市委书记的三方博弈；深圳和习近平家族... youtube      lead     https://www.youtube.com/watch?v=rd-oTL3PlKc
+134  我为何劝普通人来深圳创业生活？这里有北方没有的理念和奋斗精神 #深圳 #创业 #打工 #赚钱 ... youtube      lead     https://www.youtube.com/watch?v=3_S7Lae2lGg
+135  【港人心聲｜港青籲設就業創業專欄方便申報補貼 本報專訪深圳人社局解惑】                youtube      lead     https://www.youtube.com/watch?v=Xe_uIVnVFW8
+136  到深圳福永走访尾货大佬,相互探讨交流今年行情。相互扶持共谋发展！梅正峰深圳创业记           youtube      lead     https://www.youtube.com/watch?v=Pgc71oBIXZg
+137  深圳速度！创业一年，我们从小区房搬到甲级写字楼                            youtube      lead     https://www.youtube.com/watch?v=NTJKppr35S4
+138  2025深圳人才补贴                                         zhihu        lead     https://www.zhihu.com/articles/1938188766050231674
+139  搞钱之都再进化！深圳2027目标：1000+高成长AI企业，社区面积超50万平！           zhihu        lead     https://www.zhihu.com/articles/2016634844478723843
+140  深圳的45亿补贴，真正的赢家可能不是AI企业，而是“AI版黄牛党”                  zhihu        lead     https://www.zhihu.com/articles/25777707909
+141  2026年AI创业必看：6大城市最新扶持政策全拆解，超级个体直接照着申领               zhihu        lead     https://www.zhihu.com/articles/2008179963212350428
+142  深圳拟推“龙虾十条”：AI“养虾”狂欢背后的机遇与清醒                        zhihu        lead     https://www.zhihu.com/articles/2014702048822732374
+143  最高5000万！深圳的这些AI政策补贴，你拿到了吗？                         zhihu        lead     https://www.zhihu.com/articles/711568345
+144  深圳创业的朋友，你们有申请创业补贴吗？                                zhihu        lead     https://www.zhihu.com/answers/2015798752238142831
+145  2025年深圳创业补贴最全指南：从申请条件到避坑攻略                         zhihu        lead     https://www.zhihu.com/articles/1934296867497289267
+146  深圳龙岗推出“龙虾十条”新政，百万补贴助力AI跨境卖家                        zhihu        lead     https://www.zhihu.com/articles/2015029874528642346
+147  继深圳之后，无锡高新区发布「养龙虾」 12 条，最高补贴 500 万， AI 产业的新风口来了吗？  zhihu        lead     https://www.zhihu.com/answers/2017231360729834871
+148  如何申请创业补贴？                                          zhihu        lead     https://www.zhihu.com/answers/2016925410605160434
+149  深圳创业补贴好拿吗?                                         zhihu        lead     https://www.zhihu.com/answers/3040831629
+150  AI催化新一轮创业潮与创富潮：深圳在抢跑                               zhihu        lead     https://www.zhihu.com/articles/27922336590
+151  在深圳开公司有哪些补贴？                                       zhihu        lead     https://www.zhihu.com/answers/2002332171210351981
+152  深圳创业补贴薅羊毛指南：5-8 万补贴非深户/在校生都能拿                      zhihu        lead     https://www.zhihu.com/articles/1895071256568636039
+153  深圳创业补贴怎么样申请？                                       zhihu        lead     https://www.zhihu.com/answers/2015013140845327770
+154  深圳创业补贴全攻略                                          zhihu        lead     https://www.zhihu.com/articles/1977463090347012580
+155  来了，深圳人工智能先锋城市项目扶持计划                                zhihu        lead     https://www.zhihu.com/articles/1885653047599952183
+156  最高补贴3000万，深圳市人工智能政策补贴汇总更新！                         zhihu        lead     https://www.zhihu.com/articles/6202581303
+157  【政策】深圳龙岗关于支持人工智能产业引领高质量发展实施细则                      zhihu        lead     https://www.zhihu.com/articles/1913603263518966684
+158  深圳大模型备案补贴政策全解析｜企业可直接对照申报                           zhihu        lead     https://www.zhihu.com/articles/1987571084204204762
+159  深圳“人工智能+”先进制造业行动计划深度解读：中小企业如何抓住AI+制造历史机遇           zhihu        lead     https://www.zhihu.com/articles/2011585349999157510
+160  深圳“人工智能+”先进制造业行动计划深度解读：中小企业如何抓住AI+制造历史机遇           zhihu        lead     https://www.zhihu.com/articles/2009074375480063879
+161  AI 龙虾风暴：深圳一夜之间，有人赚 26 万，公务员开始&#34;上班&#34;          zhihu        lead     https://www.zhihu.com/articles/2014155577140463453
+162  深圳“人工智能+”先进制造业行动计划深度拆解：中小企业如何抓住AI+制造历史机遇？          zhihu        lead     https://www.zhihu.com/articles/2009721927959340684
+163  深圳龙岗首发&#34;AI龙虾十条&#34;：OpenClaw迎来首个地方政府级支持政策       zhihu        lead     https://www.zhihu.com/articles/2014777859063980349
+164  中国四大中心城市人工智能产业政策深度解构与个人Agent开发者资助获取战略研究报告          zhihu        lead     https://www.zhihu.com/articles/2015514803054069061
+165  解读十大城市的一人公司（OPC）支持政策                               zhihu        lead     https://www.zhihu.com/articles/2010031933762061062
+166  龙岗为什么要为“龙虾”和 OPC 单独出政策                             zhihu        lead     https://www.zhihu.com/articles/2014162030089762609
+167  重磅，深圳市高层次人才项目全面启动                                  zhihu        lead     https://www.zhihu.com/articles/1956505665108412390
+168  2026年深圳创业补贴全攻略，10W+，实打实给你~                         zhihu        lead     https://www.zhihu.com/articles/2012933491755590429
+169  深圳创业补贴确实香！但是申请之前请你先搞懂流程，不然吃大亏！！！                   zhihu        lead     https://www.zhihu.com/articles/2002705880806888971
+170  深圳创业补贴难申请？如何顺利申请最高45W创业补贴+300W贴息扶持？                zhihu        lead     https://www.zhihu.com/articles/494448136
+171  深圳创业补贴全攻略：非深户也能领，多维度拆解申请要点与避坑指南                    zhihu        lead     https://www.zhihu.com/articles/1976435393692967344
+172  2025深圳创业补贴干货：不限制户籍学历，就可以申请到8万元                     zhihu        lead     https://www.zhihu.com/articles/28557278069
+173  深圳创业人必看！0门槛薅5-8万政府补贴，手把手教你申请                       zhihu        lead     https://www.zhihu.com/articles/1899764968989098171
+174  冲！深圳创业真香现场！跟着大佬思路薅6万补贴，申请攻略直接抄                     zhihu        lead     https://www.zhihu.com/articles/1931306549361489522
+175  创业为何来深圳？深圳创业补贴金，火力全开，扶持真正创业的人                      zhihu        lead     https://www.zhihu.com/articles/1928416469827434432
+176  速度冲！深圳官宣：2025深圳创业补贴，这些人已经无偿拿到                      zhihu        lead     https://www.zhihu.com/articles/1915379513052869645
+177  深圳创业补贴有多香？我靠它开店多撑了18个月，附最强避坑指南                     zhihu        lead     https://www.zhihu.com/articles/1934584382556975910
+178  2025深圳创业补贴炸裂新政！非深户也能狂揽8万，申请攻略速收                    zhihu        lead     https://www.zhihu.com/articles/1897602805633640148
+179  深圳创业这些补贴你能领多少？最新补贴明细+申请攻略发布！                       zhihu        lead     https://www.zhihu.com/articles/1903402155316089361
+180  在深圳创业，这些补贴别错过！申请条件+要求+攻略                           zhihu        lead     https://www.zhihu.com/articles/31850340086

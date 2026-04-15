@@ -1,288 +1,335 @@
-# MoleMiner — 5 阶段搜索管线架构
+# MoleMiner — AI 递归搜索架构
 
-## 管线总览
+## 架构总览
 
 ```
-用户输入: "AI hackathon 2026"
+用户输入: "AI hackathon 2026"  (普通 or --deep 模式)
         │
-   ┌────▼────┐
-   │ Stage 1 │  Query Enhancement（LLM 查询增强）
-   │  LLM    │  生成平台化、多语言搜索词
-   └────┬────┘
-        │
-   ┌────▼────┐
-   │ Stage 2 │  Parallel Dispatch（并行分发）
-   │ 多源搜索 │  google / hn / tavily / reddit / zhihu / ...
-   └────┬────┘
-        │
-   ┌────▼────┐
-   │ Stage 3 │  Aggregate（聚合）
-   │ 归一化   │  去重、时效过滤、分类 direct vs lead
-   └────┬────┘
-        │
-   ┌────▼────┐           ┌──────────┐
-   │ Stage 4 │──线索──▶  │ 二次搜索  │ 提取实体名 → 搜官方链接
-   │ 深挖     │◀─结果──  │ Tavily   │
-   └────┬────┘           └──────────┘
-        │
-   ┌────▼────┐
-   │ Stage 5 │  Output & Store（输出 + 入库）
-   │ 输出入库 │  table / json / markdown / SearchResult[] + SQLite
-   └─────────┘
+   ┌────▼─────────────────────────────────────────┐
+   │ Round 0                                       │
+   │                                               │
+   │  ③ aiGenerateQueries                          │
+   │     PART 1: anchor 决策 (zh/en/none)           │
+   │     PART 2: dimension 展开 (仅 deep)           │
+   │     PART 3: platform 分配                      │
+   │         │                                     │
+   │  ┌──────▼──────┐                              │
+   │  │  Dispatch   │  12 源并行，按 anchor 下发查询  │
+   │  └──────┬──────┘                              │
+   │         │                                     │
+   │  ┌──────▼──────┐                              │
+   │  │  Aggregate  │  仅 URL 去重 + trigram 去重    │
+   │  │             │  (不再有规则过滤层)             │
+   │  └──────┬──────┘                              │
+   │         │                                     │
+   │  ① aiClassify（LLM 判 direct/lead/irrelevant）│
+   │     irrelevant 丢弃（唯一相关性过滤，全 LLM）    │
+   │         │                                     │
+   │  ② aiExtractEntities（实体名 + 置信度 0-1）   │
+   │         │                                     │
+   │  direct → 加入结果集                           │
+   │  entities → 进入下一轮                         │
+   └─────────┬───────────────────────────────────┘
+             │ top-10 高置信度实体
+   ┌─────────▼───────────────────────────────────┐
+   │ Round 1+                                     │
+   │                                              │
+   │  ③ aiGenerateQueries（只用 brave，锚定原意）  │
+   │         │                                    │
+   │  Dispatch → Aggregate → ① → ②               │
+   │         │                                    │
+   │  无新实体 → 停止                              │
+   └─────────┬──────────────────────────────────┘
+             │
+   ┌─────────▼──────────┐
+   │ 输出 + 存储         │
+   │ SearchResponse      │
+   │ + SQLite 入库       │
+   └────────────────────┘
 ```
 
-**moleminer 是通用搜索工具，负责搜索、返回结构化结果并自动入库 SQLite。**
-评分、推送等业务逻辑由上层应用（如 Radar skill）负责。
+## 三个 AI 函数（`ts/src/ai.ts`）
 
----
+LLM 是必须依赖。所有 AI 调用使用 JSON schema 约束输出，保证 100% 格式合规。
 
-## Stage 1: Query Enhancement
+### ① aiClassify — 三类分类
 
-### 输入
-```
-原始 query: "AI 数字孪生 能源"
-```
-
-### LLM 处理
-根据各平台用户表达习惯，生成平台化搜索词：
+**输入**: 搜索结果列表（title, url, snippet, source, metadata）
+**输出**: 每条结果标记为 `direct`（一手来源）、`lead`（提及/讨论）、`irrelevant`（过滤）
 
 ```json
 {
-  "search_engine": ["AI digital twin energy hackathon 2026", "数字孪生 能源 黑客松 2026"],
-  "zhihu": ["数字孪生 比赛 推荐", "2026 值得参加的 AI 比赛"],
-  "xiaohongshu": ["AI比赛推荐", "黑客松经验分享"],
-  "reddit": ["AI hackathon 2026 energy", "digital twin competition"],
-  "wechat": ["数字孪生 大赛", "AI 能源 创新挑战赛"]
+  "results": [
+    {"index": 0, "type": "direct"},
+    {"index": 1, "type": "lead"},
+    {"index": 2, "type": "irrelevant"}
+  ]
 }
 ```
 
-### 实现
-- 调用 LLM API（OpenAI / Anthropic / 本地模型，用户可配置）
-- `--no-enhance` 标志跳过增强，直接用原始 query 搜所有源
-- 不引入 LangChain 等框架，直接调 API
+- `irrelevant` 在实体提取前直接丢弃（反漂移第一层）
+- 批处理：每批 30 条，snippet 截断至 100 字符
+- 模型：fast model（gpt-4o-mini / gemini-2.5-flash）
+- **SPECIFICITY TEST（通用规则）**：结果必须包含具体信息（金额/日期/地点/步骤等），不只是主题提及
+- `summary` 字段已从 schema 移除（之前会生成但被丢弃，浪费 token），页面内容由后续 `enrichWithContent` 阶段抽取
+
+### ② aiExtractEntities — 实体提取 + 置信度
+
+**输入**: lead 类型的结果列表
+**输出**: 实体名 + 置信度（0-1），最多 top 10
+
+```json
+{
+  "entities": [
+    {"name": "Gemini Hackathon 2026", "confidence": 0.95},
+    {"name": "Google AI Studio", "confidence": 0.7}
+  ]
+}
+```
+
+**试金石测试**（反漂移第二层）：置信度基于"单独搜索这个名词，结果大部分和原始意图相关"的可能性。通用词（深圳、AI、百度）置信度 < 0.5，会被过滤。
+
+- 模型：fast model
+- 跨轮去重：seenEntities set，已搜实体不再搜
+
+### ③ aiGenerateQueries — 智能查询生成
+
+**输入**:
+- Round 0: 用户原始意图 → AI 选择相关源 + 生成平台化查询
+- Round 1+: 实体列表 + 原始意图关键词 → 只用 brave（锚定，不发散）
+
+**三段式输出结构**（Round 0）:
+
+```json
+{
+  "anchor": "none",                          // PART 1: 跨语言锚定决策
+  "base_keywords": "AI hackathon 2026",      // 原始语言
+  "translated_base": "AI 黑客松 2026",        // 另一语言（按 anchor 决定是否为空）
+  "dimensions": [                            // PART 2: 维度展开（仅 deep 模式）
+    {
+      "label": "WHEN",
+      "priority": "primary",
+      "values": ["AI hackathon 2026", "AI hackathon 2025", "AI hackathon latest"]
+    }
+  ],
+  "platforms": [                             // PART 3: 平台选择
+    {"platform": "brave", "skip": false},
+    {"platform": "hackernews", "skip": false},
+    ...
+  ]
+}
+```
+
+**PART 1 — 跨语言锚定决策（三元）**：
+
+| anchor | 触发条件 | 翻译策略 | 例子 |
+|--------|---------|---------|------|
+| `zh` | 查询含中文地名/中国相关实体 | 不翻译，跳过英文源 | "中国 agent 黑客松" |
+| `en` | 查询含英文地名/西方实体 | 不翻译，跳过中文源 | "Silicon Valley hackathon" |
+| `none` | 全球性/无地理锚定话题 | **双语都生成**，所有源各用其语言 | "AI hackathon 2026"、"React vs Vue" |
+
+**PART 2 — 维度展开（仅 deep 模式）**：MECE 6 维度（WHAT/WHERE/WHEN/WHO/HOW/SOURCE），详见 `autodev-design.md`。普通模式强制 `dimensions: []`，但 `base_keywords` 保留时效性感知（AI 基于 CURRENT_DATE 自动注入年份）。
+
+**PART 3 — 平台选择**：AI 根据 anchor + 源的语言适配决定 skip 或搜索。代码层的分发逻辑按 anchor 进一步处理跨语言查询的下发。
+
+- Round 0 模型：strong model（gpt-5.4 / gemini-2.5-flash）
+- Round 1+ 模型：strong model，查询 = 实体名 + 原始意图关键词（反漂移第三层，使用独立的 `ENTITY_QUERIES_SYSTEM` prompt）
 
 ---
 
-## Stage 2: Parallel Dispatch
+## 递归循环
 
-### 信息源分层
+### 循环状态
 
-**零配置（pip install moleminer 即用）：**
+```typescript
+seenUrls: Set<string>          // 跨轮 URL 去重
+seenEntities: Set<string>      // 跨轮实体去重
+allDirects: SearchResult[]     // 累积的直接结果
+roundNum: number               // 当前轮次
+```
 
-| 源 | 方式 | 覆盖 |
+### 收敛条件（任一满足即停）
+
+1. `roundNum >= maxRounds`（默认 3）
+2. 本轮 AI 提取的高置信度实体全部在 seenEntities 中
+3. 本轮搜索结果去重后为空
+
+### 反漂移防御
+
+| 层 | 机制 | 效果 |
 |----|------|------|
-| google.py | Web scraping（不可靠） | 全网 |
-| hackernews.py | Algolia API（免费） | HN 社区 |
-| github.py | GitHub REST API | 代码/项目 |
-| stackoverflow.py | Stack Exchange API | 技术问答 |
-| devto.py | Forem API | 开发者文章 |
-| lobsters.py | JSON 端点 | 技术社区 |
+| 1 | irrelevant 分类 | 过滤主题无关结果 |
+| 2 | 实体置信度阈值 | 屏蔽通用词（深圳、AI、百度） |
+| 3 | Round 1+ 查询锚定 | 防止搜索发散，始终回归原始意图 |
 
-**需要 API key（通过 `~/.moleminer/config.toml` 或环境变量配置）：**
+测试验证："深圳对AI创业补贴" → 71 个结果，100% 相关（反漂移前：2104 个结果）
 
-| 源 | 方式 | 覆盖 |
-|----|------|------|
-| brave.py | Brave Search API | 全网（独立索引） |
-| tavily.py | Tavily API | 全网语义搜索 + 内容提取 |
-| exa.py | Exa API | 语义搜索 + findSimilar |
-| reddit.py | App-only OAuth | Reddit 社区 |
-| youtube.py | yt-dlp（零配置） | YouTube 视频 |
-| producthunt.py | GraphQL API | 产品发现 |
+---
 
-**需要浏览器登录（[cn] extra）：**
+## 信息源矩阵（11 个）
 
-| 源 | 方式 | 覆盖 |
-|----|------|------|
-| zhihu.py | Playwright + Cookie | 知乎 |
-| xiaohongshu.py | Playwright + Cookie | 小红书 |
-| weibo.py | Playwright + Cookie | 微博 |
-| bilibili.py | 逆向 API | Bilibili |
+按 **功能 × 地区** 分类：
 
-**内容提取（Lead Resolution 使用）：**
-
-| 工具 | 方式 | 用途 |
+| 功能 | 海外 | 中国 |
 |------|------|------|
-| Trafilatura | 本地 Python 库（首选） | HTML → 纯文本 |
-| Jina Reader | `r.jina.ai/{url}` API | 远程 URL 抓取+清洗 |
-| Tavily Extract | API | 批量 URL 内容提取 |
+| 搜索引擎 | brave | — |
+| 社区 | reddit, hackernews | — |
+| 问答 | stackoverflow | 知乎 |
+| 代码 | github | — |
+| 视频 | youtube | — |
+| 博客 | devto | 微信公众号 |
+| 社交 | reddit | 微博, 小红书 |
 
-### 统一返回格式
+**已删除（MECE 清理）**: google（与brave重叠）, producthunt（与reddit重叠）, tavily/exa（与brave重叠）, lobsters（与HN重叠）
 
-```python
-@dataclass
-class SearchResult:
-    title: str
-    url: str
-    source: str           # "google" | "reddit" | "zhihu" | ...
-    snippet: str           # 摘要
-    result_type: str       # "direct" | "lead"
-    timestamp: str | None  # 发布/发现时间
-    mentions: list[str]    # lead 中提到的实体名称（direct 为空）
-    metadata: dict         # 源特有的额外字段
+**可选扩展**: X/Twitter（需 twitter-cli）
+
+### 统一接口（`ts/src/sources/base.ts`）
+
+```typescript
+abstract class BaseSource {
+  abstract name: string
+  abstract sourceType: 'api' | 'scrape' | 'browser'
+  abstract requiresAuth: boolean
+  installExtra?: string     // 'cn' | undefined
+
+  abstract enabled(config: Config): boolean
+  abstract search(queries: string[]): Promise<SearchResult[]>
+}
 ```
 
-### result_type 定义
-
-- `direct` — URL 直接指向目标内容（官网、申请页）
-- `lead` — URL 是社区讨论帖，内容中提到了目标但不是官方来源
-
-搜索引擎返回的通常是 direct，社区返回的通常是 lead。
+所有源注册到 `SourceRegistry`，pipeline 根据配置和可用性自动选择。
 
 ---
 
-## Stage 3: Aggregate
+## 数据模型（`ts/src/models.ts`）
 
+### SearchResult
+
+```typescript
+interface SearchResult {
+  title: string
+  url: string
+  source: string           // "brave" | "reddit" | "zhihu" | ...
+  snippet: string
+  resultType: 'direct' | 'lead'   // 由 AI 分类后设置
+  language?: 'zh' | 'en'
+  timestamp?: string
+  metadata: Record<string, unknown>  // 互动数据：score/likes/comments/views
+}
 ```
-所有原始结果
-    │
-    ├── URL 精确去重
-    ├── 标题模糊去重（编辑距离 / n-gram）
-    ├── 时效过滤
-    │     ├── 标题/摘要含过期年份 → 丢弃
-    │     ├── timestamp 超过阈值 → 丢弃
-    │     └── 无法判断 → 保留
-    │
-    ├── direct → 直接输出
-    └── lead → 进 Stage 4
+
+### SearchResponse
+
+```typescript
+interface SearchResponse {
+  results: SearchResult[]
+  sources: SourceStatus[]
+  query: string
+  totalResults: number
+  rounds: number
+}
 ```
-
-### 去重逻辑
-
-基于 last30days 的 dedupe.py 改造：
-1. URL 规范化（去除 query params、统一协议）
-2. 标题相似度（避免同一内容不同源重复）
-3. 合并时保留最丰富的元数据
 
 ---
 
-## Stage 4: Lead Resolution
+## LLM 集成（`ts/src/llm.ts`）
 
-社区帖子说"推荐 IEEE IES Challenge"→ 提取实体名 → 搜官方链接。
+### 支持的 Provider
 
+| Provider | API 格式 | 说明 |
+|----------|---------|------|
+| OpenAI (GPT-5.4) | `/chat/completions` + `response_format` | JSON schema 约束 |
+| Anthropic (Claude 4.6) | `/v1/messages` + tool_use | JSON schema 约束 |
+| Gemini | OpenAI 兼容层 | JSON schema（strict mode 不支持，需绕过） |
+| Ollama | OpenAI 兼容 | 依赖模型能力 |
+
+### 多 Profile 配置
+
+```toml
+[[profiles]]
+name = "gemini"
+provider = "gemini"
+api_key = "..."
+fast_model = "gemini-2.5-flash"
+strong_model = "gemini-2.5-flash"
+
+[[profiles]]
+name = "openai"
+provider = "openai"
+api_key = "sk-..."
+fast_model = "gpt-4o-mini"
+strong_model = "gpt-5.4"
 ```
-Lead: "推荐 IEEE IES Challenge，今年主题是能源AI"
-  │
-  ├── 提取: entity = "IEEE IES Challenge 2026"
-  │
-  ├── Tavily/Google 搜索: "IEEE IES Challenge 2026 official"
-  │
-  ├── 找到: https://ai.ieee-ies.org/
-  │
-  └── Jina/Tavily extract: 提取页面内容 → 新的 direct SearchResult
-```
 
-### 失败处理
-- 搜不到 → 丢弃
-- 一条 lead 提到多个实体 → 每个独立处理
-
-### 实体提取方式
-- 有 LLM 时：LLM 提取
-- 无 LLM 时：基于规则的简单提取（大写词组、引号内容等）
+- `moleminer profile use <name>` 切换
+- 自动重试：429/5xx 指数退避（3 次，1s/2s/4s）
 
 ---
 
-## Stage 5: Output & Store
+## 中国平台登录（`ts/src/utils/cookies.ts`）
 
-搜索结果格式化输出，同时自动入库 SQLite。不做评分。
+### 登录机制
 
-### CLI 输出格式
+| 平台 | 机制 | 说明 |
+|------|------|------|
+| 知乎 | headless 终端 QR | 拦截 `/api/v3/account/api/login/qrcode` 响应 |
+| 微博 | headless 终端 QR | 拦截 `qr.weibo.cn/inf/gen` 请求 |
+| 小红书 | headless 终端 QR | 拦截 `/api/sns/web/v1/login/qrcode/create` 响应 |
 
-```bash
-moleminer search "AI hackathon" --format table   # 默认，终端友好
-moleminer search "AI hackathon" --format json    # 程序可解析
-moleminer search "AI hackathon" --format markdown # 文档友好
-```
+三个平台均：**无浏览器弹窗，直接在终端打印 QR 码**。
 
-### SDK 返回
+### XHS 关键细节
 
-```python
-results: list[SearchResult]  # 结构化对象列表
-```
-
-### SQLite 存储
-
-每次搜索自动写入 `~/.moleminer/moleminer.db`：
-
-- **searches 表**：query 原文、增强后的 queries、使用的源列表、搜索时间、结果数量
-- **results 表**：聚合后的每条 SearchResult（关联 search_id）
-
-上层应用（如 Radar）可直接读取 SQLite 文件，或通过 SDK 查询历史。
+- 需反检测 flag：`--disable-blink-features=AutomationControlled` + 删 `navigator.webdriver`
+- 成功检测：`web_session` 值变化（XHS 在页面加载时就设置匿名 web_session，必须检测值变化而非仅检测存在）
+- XHS 签名：纯 TypeScript 实现（`ts/src/utils/xhs-sign.ts`），移植自 xhshow (MIT)
+- 搜索 payload 必须包含：`ext_flags: []`, `geo: ''`, `image_formats: ['jpg','webp','avif']`
 
 ---
 
-## 插件架构
+## 项目结构（`ts/src/`）
 
-### BaseSource
-
-```python
-from abc import ABC, abstractmethod
-
-class BaseSource(ABC):
-    name: str
-    source_type: str       # "api" | "scrape" | "browser"
-    requires_auth: bool
-    install_extra: str     # 对应的 pip extra 名称
-
-    @abstractmethod
-    async def search(self, queries: list[str]) -> list[SearchResult]:
-        """执行搜索，返回结果列表"""
-        ...
-
-    def enabled(self, config: Config) -> bool:
-        """检查依赖和凭证是否满足"""
-        ...
-
-    def auth_instructions(self) -> str:
-        """返回认证指引文本"""
-        ...
+```
+ts/src/
+├── index.ts             # CLI 入口（commander）
+├── pipeline.ts          # 递归搜索编排器
+├── ai.ts                # 三个 AI 函数（classify/extract/generate）+ 反漂移 prompt
+├── llm.ts               # LLM 客户端（multi-provider + multi-profile + retry）
+├── config.ts            # TOML + env var 配置
+├── models.ts            # SearchResult, SearchResponse, SourceStatus
+├── aggregate.ts         # URL去重 + trigram标题去重 + 时效过滤 + zero-overlap
+├── store.ts             # SQLite 持久存储（sql.js WASM）
+├── sources/
+│   ├── base.ts          # BaseSource 抽象类
+│   ├── index.ts         # SourceRegistry + 所有源注册
+│   ├── brave.ts         # Brave Search API
+│   ├── hackernews.ts    # HN Algolia API
+│   ├── reddit.ts        # Reddit JSON API
+│   ├── stackoverflow.ts # SO API
+│   ├── github.ts        # GitHub Search API
+│   ├── devto.ts         # dev.to API
+│   ├── youtube.ts       # YouTube scrape
+│   ├── wechat.ts        # 微信公众号（sogou）
+│   ├── weibo.ts         # 微博 m.weibo.cn API（需 Cookie）
+│   ├── zhihu.ts         # 知乎 API（需 Cookie）
+│   ├── xiaohongshu.ts   # 小红书 edith API（需 Cookie + xhs-sign）
+│   └── x.ts             # X/Twitter（可选，需 twitter-cli）
+└── utils/
+    ├── cookies.ts        # Cookie 持久化 + headless 终端 QR 登录
+    ├── xhs-sign.ts       # XHS API 签名（纯 TS，移植自 xhshow MIT）
+    ├── subprocess.ts     # execFileSync 封装（X/Twitter subprocess 调用）
+    ├── dedupe.ts         # URL 规范化 + 标题 trigram Jaccard
+    └── http.ts           # fetch 封装 + 重试
 ```
 
-### SourceRegistry
+---
 
-```python
-class SourceRegistry:
-    _sources: dict[str, type[BaseSource]]
+## 存储
 
-    def register(self, source_cls: type[BaseSource]):
-        ...
+SQLite (`~/.moleminer/moleminer.db`)，每次搜索自动入库。
 
-    def get_enabled_sources(self, config: Config) -> list[BaseSource]:
-        """返回当前环境下可用的所有源"""
-        ...
+- **searches 表**: query, sources_used, result_count, searched_at
+- **results 表**: title, url, source, snippet, result_type（关联 search_id）
 
-    def get_source(self, name: str) -> BaseSource:
-        ...
-```
-
-### 注册方式
-
-```python
-# sources/__init__.py
-from .google import GoogleSource
-from .hackernews import HackerNewsSource
-# ...
-
-registry = SourceRegistry()
-registry.register(GoogleSource)
-registry.register(HackerNewsSource)
-# ...
-```
-
-用户自定义源：
-
-```python
-from moleminer.sources.base import BaseSource, SearchResult
-
-class MySource(BaseSource):
-    name = "my_source"
-    source_type = "api"
-    requires_auth = True
-
-    async def search(self, queries):
-        # 自定义搜索逻辑
-        return [SearchResult(...)]
-
-# 注册
-from moleminer import registry
-registry.register(MySource)
-```
+只存最终结果，不存中间轮次。
