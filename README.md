@@ -57,16 +57,15 @@ Round 3 ━━━━━━━━━━━━━━━━━━━━━━━━
 ## How It Works
 
 ```mermaid
-graph TD
-    A["<b>Your intent</b><br/><i>'AI hackathon 2026'</i>"] --> B["<b>AI generates queries</b><br/>scope detection + dimension expansion<br/>+ smart source selection"]
-    B --> C["<b>12 sources in parallel</b><br/>Brave &bull; Reddit &bull; HN &bull; GitHub<br/>YouTube &bull; Zhihu &bull; XHS &bull; Weibo &bull; ..."]
-    C --> D["<b>AI classifies</b><br/>direct / lead / irrelevant"]
-    D --> E["<b>AI extracts entities</b><br/>names + confidence scores"]
-    E --> F{"New entities<br/>found?"}
-    F -->|"Yes"| B
-    F -->|"No"| G["<b>Content extraction</b><br/>fetch pages &rarr; clean text &rarr; compress"]
-    G --> H["<b>Geo-location extraction</b><br/>AI maps results to coordinates"]
-    H --> I["<b>Output</b><br/>Terminal &bull; JSON &bull; Markdown &bull; 3D Globe"]
+graph LR
+    A["🔍 <b>Intent</b>"] --> B["<b>AI Queries</b><br/>scope + dims + sources"]
+    B --> C["<b>12 Sources</b><br/>parallel search"]
+    C --> D["<b>AI Classify</b><br/>direct / lead / irrelevant"]
+    D --> E["<b>Extract Entities</b><br/>names + confidence"]
+    E --> F{"New?"}
+    F -- "Yes → follow leads" --> B
+    F -- "No → converged" --> G["<b>Fetch Pages</b><br/>extract + compress"]
+    G --> H["<b>Geo + Output</b><br/>📍 locations → 🌐 globe"]
 
     style A fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
     style B fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
@@ -75,8 +74,7 @@ graph TD
     style E fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
     style F fill:#1a1a2e,stroke:#ffa726,color:#e0e0e8
     style G fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
-    style H fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
-    style I fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
+    style H fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
 ```
 
 The key insight: **search results contain clues**. A hackathon page mentions an organizer. The organizer's site lists 5 more events. Each event has sponsors. MoleMiner follows these leads automatically -- the same way a researcher would, but across 12 platforms simultaneously.
