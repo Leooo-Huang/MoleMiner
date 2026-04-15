@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 520" font-family="Inter, -apple-system, system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#4fc3f7"/>
+    </marker>
+    <marker id="arrow-warn" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#ffa726"/>
+    </marker>
+    <marker id="arrow-ok" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#66bb6a"/>
+    </marker>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="520" rx="12" fill="#0a0a0f"/>
+
+  <!-- Column labels -->
+  <text x="185" y="32" fill="#4fc3f7" font-size="11" font-weight="600" text-anchor="middle" opacity="0.6">SEARCH LOOP</text>
+  <text x="635" y="32" fill="#66bb6a" font-size="11" font-weight="600" text-anchor="middle" opacity="0.6">EXTRACT &amp; OUTPUT</text>
+
+  <!-- ==================== LEFT COLUMN (down) ==================== -->
+
+  <!-- Node 1: Intent -->
+  <rect x="60" y="48" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="185" y="72" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">Your Intent</text>
+  <text x="185" y="90" fill="#8888a0" font-size="11" text-anchor="middle" font-style="italic">"AI hackathon 2026"</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="185" y1="100" x2="185" y2="118" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 2: AI Generates Queries -->
+  <rect x="60" y="120" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="185" y="144" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">AI Generates Queries</text>
+  <text x="185" y="162" fill="#8888a0" font-size="11" text-anchor="middle">scope + dimensions + source selection</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="185" y1="172" x2="185" y2="190" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 3: 12 Sources -->
+  <rect x="60" y="192" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="185" y="216" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">12 Sources in Parallel</text>
+  <text x="185" y="234" fill="#8888a0" font-size="11" text-anchor="middle">Brave  Reddit  GitHub  YouTube  Zhihu ...</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="185" y1="244" x2="185" y2="262" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 4: AI Classifies -->
+  <rect x="60" y="264" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="185" y="288" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">AI Classifies</text>
+  <text x="185" y="306" fill="#8888a0" font-size="11" text-anchor="middle">direct / lead / irrelevant</text>
+
+  <!-- Arrow 4→5 (horizontal to bottom-center) -->
+  <line x1="185" y1="316" x2="185" y2="340" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 5: AI Extract Entities (center-bottom) -->
+  <rect x="110" y="342" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="235" y="366" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">AI Extracts Entities</text>
+  <text x="235" y="384" fill="#8888a0" font-size="11" text-anchor="middle">names + confidence scores</text>
+
+  <!-- ==================== DECISION: New entities? ==================== -->
+
+  <!-- Diamond -->
+  <polygon points="410,410 450,435 410,460 370,435" fill="#1a1a2e" stroke="#ffa726" stroke-width="1.5"/>
+  <text x="410" y="439" fill="#ffa726" font-size="12" font-weight="600" text-anchor="middle">New?</text>
+
+  <!-- Arrow 5→diamond -->
+  <path d="M 300 394 L 370 430" stroke="#4fc3f7" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Yes arrow: diamond → back to Node 2 (loop) -->
+  <path d="M 370 435 L 30 435 L 30 146 L 58 146" stroke="#ffa726" stroke-width="1.5" fill="none" stroke-dasharray="6,3" marker-end="url(#arrow-warn)"/>
+  <text x="190" y="470" fill="#ffa726" font-size="11" font-weight="600" text-anchor="middle">Yes — follow leads</text>
+
+  <!-- No arrow: diamond → right to Node 6 -->
+  <path d="M 450 435 L 510 435 L 510 390 L 508 390" stroke="#66bb6a" stroke-width="1.5" fill="none" marker-end="url(#arrow-ok)"/>
+  <text x="480" y="420" fill="#66bb6a" font-size="11" font-weight="600" text-anchor="middle">No</text>
+
+  <!-- ==================== RIGHT COLUMN (up) ==================== -->
+
+  <!-- Node 6: Content Extraction -->
+  <rect x="510" y="342" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="635" y="366" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">Content Extraction</text>
+  <text x="635" y="384" fill="#8888a0" font-size="11" text-anchor="middle">fetch pages &#x2192; clean text &#x2192; compress</text>
+
+  <!-- Arrow 6→7 (up) -->
+  <line x1="635" y1="342" x2="635" y2="324" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 7: Geo-location -->
+  <rect x="510" y="264" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="635" y="288" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">Geo-location Extraction</text>
+  <text x="635" y="306" fill="#8888a0" font-size="11" text-anchor="middle">AI maps results to coordinates</text>
+
+  <!-- Arrow 7→8 (up) -->
+  <line x1="635" y1="264" x2="635" y2="246" stroke="#4fc3f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Node 8: Importance Scoring -->
+  <rect x="510" y="192" width="250" height="52" rx="8" fill="#12121a" stroke="#4fc3f7" stroke-width="1.5"/>
+  <text x="635" y="216" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">Importance Scoring</text>
+  <text x="635" y="234" fill="#8888a0" font-size="11" text-anchor="middle">authority + freshness + engagement</text>
+
+  <!-- Arrow 8→9 (up) -->
+  <line x1="635" y1="192" x2="635" y2="174" stroke="#66bb6a" stroke-width="1.5" marker-end="url(#arrow-ok)"/>
+
+  <!-- Node 9: Output -->
+  <rect x="510" y="120" width="250" height="52" rx="8" fill="#12121a" stroke="#66bb6a" stroke-width="1.5"/>
+  <text x="635" y="144" fill="#e0e0e8" font-size="14" font-weight="600" text-anchor="middle">Output</text>
+  <text x="635" y="162" fill="#8888a0" font-size="11" text-anchor="middle">Terminal  JSON  Markdown  3D Globe</text>
+
+  <!-- Decorative: subtle grid lines -->
+  <line x1="400" y1="48" x2="400" y2="340" stroke="#2a2a3e" stroke-width="0.5" stroke-dasharray="4,8" opacity="0.4"/>
+</svg>
