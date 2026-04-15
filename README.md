@@ -57,15 +57,25 @@ Round 3 ━━━━━━━━━━━━━━━━━━━━━━━━
 ## How It Works
 
 ```mermaid
-graph LR
-    A["🔍 <b>Intent</b>"] --> B["<b>AI Queries</b><br/>scope + dims + sources"]
-    B --> C["<b>12 Sources</b><br/>parallel search"]
-    C --> D["<b>AI Classify</b><br/>direct / lead / irrelevant"]
-    D --> E["<b>Extract Entities</b><br/>names + confidence"]
-    E --> F{"New?"}
-    F -- "Yes → follow leads" --> B
-    F -- "No → converged" --> G["<b>Fetch Pages</b><br/>extract + compress"]
-    G --> H["<b>Geo + Output</b><br/>📍 locations → 🌐 globe"]
+flowchart LR
+    subgraph search["⬇ Search Loop"]
+        direction TB
+        A["🔍 <b>Your Intent</b>"] --> B["<b>AI Generates Queries</b><br/>scope detection + dimensions"]
+        B --> C["<b>12 Sources in Parallel</b><br/>Brave • Reddit • HN • GitHub<br/>YouTube • Zhihu • XHS • ..."]
+        C --> D["<b>AI Classifies Results</b><br/>direct / lead / irrelevant"]
+    end
+
+    D --> E["<b>AI Extracts Entities</b><br/>names + confidence scores"]
+    E --> F{"New<br/>entities?"}
+    F -- "Yes" --> B
+
+    subgraph output["⬆ Process & Output"]
+        direction BT
+        I["📊 <b>Output</b><br/>Terminal • JSON • Markdown • 3D Globe"] --> H["🌐 <b>Geo-location Extraction</b><br/>AI maps results to coordinates"]
+        H --> G["📄 <b>Content Extraction</b><br/>fetch pages → clean text → compress"]
+    end
+
+    F -- "No — converged" --> G
 
     style A fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
     style B fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
@@ -74,7 +84,8 @@ graph LR
     style E fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
     style F fill:#1a1a2e,stroke:#ffa726,color:#e0e0e8
     style G fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
-    style H fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
+    style H fill:#1a1a2e,stroke:#4fc3f7,color:#e0e0e8
+    style I fill:#1a1a2e,stroke:#66bb6a,color:#e0e0e8
 ```
 
 The key insight: **search results contain clues**. A hackathon page mentions an organizer. The organizer's site lists 5 more events. Each event has sponsors. MoleMiner follows these leads automatically -- the same way a researcher would, but across 12 platforms simultaneously.
